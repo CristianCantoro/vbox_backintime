@@ -15,6 +15,8 @@ Usage: vbox_backintime [options] [<name>]
       --version          Print program version.
 ```
 
+You need to run the script _before_ starting the VM.
+s
 ## Prerequisites
 
 To run this script you need [`docopts`](https://github.com/docopt/docopts).
