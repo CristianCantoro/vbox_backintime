@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+
+eval "$(docopts -V - -h - : "$@" <<EOF
+Usage: vbox_backintime [options] [<name>]
+
+      --date DATE        Use DATE as base date, format %Y-%m-%d as in date 
+                         command (default: 2015-06-20)
+      --list             List names of available virtual machines
+      --verbose          Generate verbose messages.
+      --help             Show help options.
+      --version          Print program version.
+----
+vbox_backintime 0.2.0
+copyright (c) 2015 Cristian Consonni
+MIT License
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+EOF
+)"
+
+#### some useful global variables and functions ####
+
+NOW=$(($(date +%s%N)/1000000))
+
+### date default ###
+# You can change it using a tool like http://www.epochconverter.com/
+#
+# Epoch timestamp: 1434788129
+# Timestamp in milliseconds: 1434788129000
+# Human time (GMT): Sat, 20 Jun 2015 08:15:29 GMT
+# Human time (your time zone): sab 20 giu 2015 10:15:29 CEST
+DATE_DEFAULT=1434788129000
+
+list_vms() {
+    # Preparing virtual box names array, converting spaces to tildes
+    local vmslist
+    vmslist="$( vboxmanage list vms \
+              | awk  -F'{' '{printf $1";"}' \
+              | sed 's/ ;/;/g' \
+              | tr " " "~" \
+              | sed 's/~"/"/g' \
+              )"
+
+    # split vms list into an array called vms
+    # https://stackoverflow.com/
+    #   questions/10586153/split-string-into-an-array-in-bash
+    IFS=';' read -a VMS <<< "$vmslist"
+    
+    NVMS="${#VMS[@]}"
+
+    local num_vms
+    num_vms="${!VMS[@]}"
+
+    # transform tilde back to spaces
+    for i in $num_vms ; do 
+        VMS[$i]=$( echo ${VMS[$i]} | sed 's/~/ /g' )
+    done
+
+    for i in $num_vms ; do 
+        printf "%s: %s\n" "$i" "${VMS[$i]}"
+    done
+
+}
+
+#### ####
+
+if [ -z "$name" ] ; then
+
+    echo "Available virtual machines:"
+    list_vms
+
+    while true; do
+        echo -n "-> Select the VM no.: "
+        read reply
+        echo
+        if [[ "$reply" =~ ^[0-9]+$ ]]; then
+            if [ $reply -ge 0 -a $reply -le $((NVMS-1)) ] ; then
+                break
+            else
+                echo "Selection must be a number between 0 and $((NVMS-1))."
+                echo
+            fi
+
+        else
+            echo -n "Error: $reply is not an integer."
+            echo "Selection must be a number between 0 and $((NVMS-1))."
+            echo
+        fi
+    done
+
+    name="${VMS[$reply]}"
+fi
+
+if $verbose ; then
+    echo "Will modify the virtual machine named: $name"
+    echo
+    echo "Current system time is: $(date)"
+    echo "Current system time is (milliseconds from epoch): $NOW"
+    echo
+fi
+
+if $list ; then
+    echo "Available virtual machines:"
+    list_vms
+
+    echo "No. of available VMS: $NVMS"
+    exit 0
+
+fi
+
+baseline=$DATE_DEFAULT
+if [ ! -z "$date" ] ; then
+    base_date=$(date -d "$date" +%s)
+    baseline=$((base_date*1000))
+fi
+
+offset=$(($NOW-$baseline))
+
+if $verbose ; then
+    echo "Offset in milliseconds is: $offset"
+    echo "Base date is (milliseconds from epoch): $baseline"
+    echo "Base date is: $(date -d @$((baseline/1000)) +'%d-%m-%Y %T %z')"
+    echo    
+fi
+
+echo "vboxmanage modifyvm $name  --biossystemtimeoffset -$offset"
+echo
+vboxmanage modifyvm $name  --biossystemtimeoffset -$offset
