@@ -42,7 +42,7 @@ Will modify the virtual machine named: myvm1
 Current system time is: mer  5 ago 2015, 00.09.09, CEST
 Current system time is (milliseconds from epoch): 1438726149946
 
-Offset in milliseconds is: 3938020946
+Offset in milliseconds is: -3938020946
 Base date is (milliseconds from epoch): 1434788129000
 Base date is: 20-06-2015 10:15:29 +0200
 
