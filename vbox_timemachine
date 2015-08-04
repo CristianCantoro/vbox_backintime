@@ -23,9 +23,11 @@ EOF
 
 #### some useful global variables and functions ####
 
+# current time (i.e. host system time) in millisecond from Epoch
 NOW=$(($(date +%s%N)/1000000))
 
 ### date default ###
+# Every date is expressed in millisecond from Epoch
 # You can change it using a tool like http://www.epochconverter.com/
 #
 # Epoch timestamp: 1434788129
@@ -48,8 +50,10 @@ list_vms() {
     #   questions/10586153/split-string-into-an-array-in-bash
     IFS=';' read -a VMS <<< "$vmslist"
     
+    # No. of virtual machines
     NVMS="${#VMS[@]}"
 
+    # Range of numbers from 0 to NVMS (included)
     local num_vms
     num_vms="${!VMS[@]}"
 
