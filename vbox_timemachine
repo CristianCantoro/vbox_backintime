@@ -7,10 +7,10 @@ Usage: vbox_backintime [options] [<name>]
                          command (default: 2015-06-20)
       --now              Set the date to the current host system time
                          (i.e. now, the result of the date command).
-      --list             List names of available virtual machines
-      --verbose          Generate verbose messages.
-      --help             Show help options.
-      --version          Print program version.
+      --list             List names of available virtual machines and exits.
+      -v, --verbose      Generate verbose output.
+      -h, --help         Show this help message and exits.
+      --version          Print version and copyright information.
 ----
 vbox_timemachine 0.5.0
 copyright (c) 2015 Cristian Consonni

@@ -9,10 +9,12 @@ Usage: vbox_backintime [options] [<name>]
 
       --date DATE        Use DATE as base date, format %Y-%m-%d as in date 
                          command (default: 2015-06-20)
-      --list             List names of available virtual machines.
-      --verbose          Generate verbose messages.
-      --help             Show help options.
-      --version          Print program version.
+      --now              Set the date to the current host system time
+                         (i.e. now, the result of the date command).
+      --list             List names of available virtual machines and exits.
+      -v, --verbose      Generate verbose output.
+      -h, --help         Show this help message and exits.
+      --version          Print version and copyright information.
 ```
 
 **You need to run the script _before_ starting the VM.**
