@@ -5,12 +5,14 @@ Usage: vbox_backintime [options] [<name>]
 
       --date DATE        Use DATE as base date, format %Y-%m-%d as in date 
                          command (default: 2015-06-20)
+      --now              Set the date to the current host system time
+                         (i.e. now, the result of the date command).
       --list             List names of available virtual machines
       --verbose          Generate verbose messages.
       --help             Show help options.
       --version          Print program version.
 ----
-vbox_backintime 0.3.0
+vbox_timemachine 0.4.0
 copyright (c) 2015 Cristian Consonni
 MIT License
 This is free software: you are free to change and redistribute it.
@@ -111,12 +113,17 @@ if $list ; then
 fi
 
 baseline=$DATE_DEFAULT
+
 if [ ! -z "$date" ] ; then
     base_date=$(date -d "$date" +%s)
     baseline=$((base_date*1000))
 fi
 
-offset=$(($NOW-$baseline))
+offset=$(($baseline-$NOW))
+
+if $now ; then
+    offset=$((0))
+fi
 
 if $verbose ; then
     echo "Offset in milliseconds is: $offset"
@@ -125,6 +132,6 @@ if $verbose ; then
     echo    
 fi
 
-echo "vboxmanage modifyvm $name  --biossystemtimeoffset -$offset"
+echo "vboxmanage modifyvm $name --biossystemtimeoffset $offset"
 echo
-echo $name | xargs -L1 -I {} vboxmanage modifyvm {}  --biossystemtimeoffset -$offset
+echo $name | xargs -L1 -I {} vboxmanage modifyvm {} --biossystemtimeoffset $offset

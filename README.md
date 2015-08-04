@@ -15,7 +15,7 @@ Usage: vbox_backintime [options] [<name>]
       --version          Print program version.
 ```
 
-*You need to run the script _before_ starting the VM.*
+**You need to run the script _before_ starting the VM.**
 
 The script will always print the command used, i.e.:
 ```
@@ -46,7 +46,7 @@ Offset in milliseconds is: 3938020946
 Base date is (milliseconds from epoch): 1434788129000
 Base date is: 20-06-2015 10:15:29 +0200
 
-vboxmanage modifyvm sparkvm  --biossystemtimeoffset -3938020946
+vboxmanage modifyvm "myvm1" --biossystemtimeoffset -3938020946
 ```
 
 ## Prerequisites
