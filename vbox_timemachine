@@ -17,6 +17,7 @@ copyright (c) 2015 Cristian Consonni
 MIT License
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
+See https://github.com/CristianCantoro/vbox_timemachine for more info.
 EOF
 )"
 
@@ -134,4 +135,5 @@ fi
 
 echo "vboxmanage modifyvm $name --biossystemtimeoffset $offset"
 echo
-echo $name | xargs -L1 -I {} vboxmanage modifyvm {} --biossystemtimeoffset $offset
+# xargs' -L1 is implied by -I
+echo $name | xargs -I {} vboxmanage modifyvm {} --biossystemtimeoffset $offset
