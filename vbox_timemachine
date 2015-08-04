@@ -12,7 +12,7 @@ Usage: vbox_backintime [options] [<name>]
       --help             Show help options.
       --version          Print program version.
 ----
-vbox_timemachine 0.4.0
+vbox_timemachine 0.5.0
 copyright (c) 2015 Cristian Consonni
 MIT License
 This is free software: you are free to change and redistribute it.
@@ -40,8 +40,7 @@ list_vms() {
     vmslist="$( vboxmanage list vms \
               | awk  -F'{' '{printf $1";"}' \
               | sed 's/ ;/;/g' \
-              | tr " " "~" \
-              | sed 's/~"/"/g' \
+              | sed 's/ "/"/g' \
               )"
 
     # split vms list into an array called vms
@@ -56,7 +55,7 @@ list_vms() {
 
     # transform tilde back to spaces
     for i in $num_vms ; do 
-        VMS[$i]=$( echo ${VMS[$i]} | sed 's/~/ /g' )
+        VMS[$i]=$( echo ${VMS[$i]} )
     done
 
     for i in $num_vms ; do 
