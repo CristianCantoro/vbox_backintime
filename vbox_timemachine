@@ -125,4 +125,4 @@ fi
 
 echo "vboxmanage modifyvm $name  --biossystemtimeoffset -$offset"
 echo
-vboxmanage modifyvm $name  --biossystemtimeoffset -$offset
+echo $name | xargs -L1 -I {} vboxmanage modifyvm {}  --biossystemtimeoffset -$offset
