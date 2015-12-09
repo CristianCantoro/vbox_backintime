@@ -55,4 +55,4 @@ vboxmanage modifyvm "myvm1" --biossystemtimeoffset -3938020946
 
 To run this script you need [`docopts`](https://github.com/docopt/docopts) 
 (and also `vboxmanage` that should come with your `VirtualBox` installation)
-(yeah, you also need VirtalBox, you didn't say?).
+(yeah, you also need VirtualBox, you didn't say?).
